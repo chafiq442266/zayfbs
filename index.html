@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZayFBS – Huile d'olive de Fquih Ben Saleh</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --vert:    #1e3a1e;
+    --vert2:   #2d5a27;
+    --or:      #b8952a;
+    --or2:     #d4ac3a;
+    --beige:   #f5f0e8;
+    --beige2:  #ede7d9;
+    --blanc:   #ffffff;
+    --texte:   #1a1a1a;
+    --muted:   #5a5a4a;
+    --radius:  4px;
+    --font-titre: 'Cormorant Garamond', serif;
+    --font-corps: 'Jost', sans-serif;
+    --transition: 0.35s ease;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-corps);
+    background: var(--beige);
+    color: var(--texte);
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ===== NAVBAR ===== */
+  #navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--vert);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    border-bottom: 1px solid rgba(184,149,42,0.3);
+  }
+
+  .nav-logo {
+    font-family: var(--font-titre);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--blanc);
+    letter-spacing: 2px;
+  }
+  .nav-logo span { color: var(--or); }
+
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+
+  .nav-links a {
+    font-family: var(--font-corps);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    transition: color var(--transition);
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--or);
+    border-bottom-color: var(--or);
+  }
+
+  /* panier bouton */
+  #btn-panier {
+    background: none;
+    border: 1px solid rgba(184,149,42,0.5);
+    color: var(--or);
+    padding: 6px 16px;
+    font-family: var(--font-corps);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition);
+    border-radius: var(--radius);
+    position: relative;
+  }
+  #btn-panier:hover { background: var(--or); color: var(--vert); }
+
+  #panier-count {
+    position: absolute;
+    top: -7px; right: -7px;
+    background: var(--or2);
+    color: var(--vert);
+    font-size: 10px;
+    font-weight: 500;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    display: none;
+  }
+
+  /* ===== SECTIONS (SPA) ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 92vh;
+    background: linear-gradient(160deg, var(--vert) 0%, #0d2610 60%, #1a3a10 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=1400&auto=format&fit=crop') center/cover no-repeat;
+    opacity: 0.12;
+  }
+
+  /* grands cercles décoratifs */
+  #hero::after {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,149,42,0.15);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-inner { position: relative; z-index: 1; max-width: 760px; }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 24px;
+  }
+
+  .hero-titre {
+    font-family: var(--font-titre);
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 300;
+    color: var(--blanc);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero-titre em { color: var(--or); font-style: italic; }
+
+  .hero-sous {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 40px;
+    background: var(--or);
+    color: var(--vert);
+    font-family: var(--font-corps);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all var(--transition);
+  }
+  .btn-primary:hover { background: var(--or2); transform: translateY(-2px); }
+
+  /* ===== SECTION TITRE ===== */
+  .section { padding: 96px 48px; }
+  .section-sm { padding: 64px 48px; }
+
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 12px;
+  }
+
+  .section-titre {
+    font-family: var(--font-titre);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    color: var(--vert);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .section-titre em { font-style: italic; color: var(--or); }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 56px;
+    font-weight: 300;
+  }
+
+  /* ===== FERMES ===== */
+  #section-fermes { background: var(--blanc); }
+
+  .fermes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    border: 1px solid var(--beige2);
+  }
+
+  .ferme-card {
+    background: var(--beige);
+    padding: 48px 36px;
+    transition: background var(--transition);
+  }
+  .ferme-card:hover { background: var(--vert); }
+  .ferme-card:hover .ferme-nom,
+  .ferme-card:hover .ferme-desc { color: rgba(255,255,255,0.85); }
+  .ferme-card:hover .ferme-icon { color: var(--or); }
+
+  .ferme-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: var(--vert2);
+    transition: color var(--transition);
+  }
+
+  .ferme-nom {
+    font-family: var(--font-titre);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--vert);
+    margin-bottom: 10px;
+    transition: color var(--transition);
+  }
+
+  .ferme-desc {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    transition: color var(--transition);
+  }
+
+  /* ===== CERTIFICATIONS ===== */
+  #section-certs { background: var(--vert); }
+  #section-certs .section-titre { color: var(--blanc); }
+  #section-certs .section-tag { color: var(--or); }
+
+  .certs-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cert-badge {
+    border: 1px solid rgba(184,149,42,0.4);
+    padding: 16px 28px;
+    color: var(--or);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 400;
+    border-radius: 100px;
+    transition: all var(--transition);
+    cursor: default;
+  }
+  .cert-badge:hover { background: var(--or); color: var(--vert); border-color: var(--or); }
+
+  /* ===== PROCESSUS ===== */
+  #section-process { background: var(--beige2); }
+
+  .etapes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+    counter-reset: etapes;
+    position: relative;
+  }
+
+  .etape {
+    padding: 40px 32px;
+    position: relative;
+    border-right: 1px solid rgba(30,58,30,0.12);
+  }
+  .etape:last-child { border-right: none; }
+
+  .etape-num {
+    font-family: var(--font-titre);
+    font-size: 64px;
+    font-weight: 300;
+    color: rgba(30,58,30,0.08);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .etape-titre {
+    font-family: var(--font-titre);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--vert);
+    margin-bottom: 8px;
+  }
+
+  .etape-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ===== PAGE PRODUITS ===== */
+  #page-produits { background: var(--beige); }
+
+  .produits-header {
+    background: var(--vert);
+    padding: 64px 48px 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .produits-header .section-titre { color: var(--blanc); margin-bottom: 0; }
+  .produits-header .section-tag { color: var(--or); }
+
+  .btn-ajouter {
+    padding: 12px 28px;
+    background: var(--or);
+    color: var(--vert);
+    font-family: var(--font-corps);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+  .btn-ajouter:hover { background: var(--or2); }
+
+  /* Formulaire produit */
+  #form-wrapper {
+    display: none;
+    background: var(--blanc);
+    border-bottom: 1px solid var(--beige2);
+  }
+  #form-wrapper.visible { display: block; }
+
+  #form-wrapper form {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .form-titre {
+    font-family: var(--font-titre);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--vert);
+    margin-bottom: 32px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-grid .col-full { grid-column: 1 / -1; }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .form-group label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    border: 1px solid var(--beige2);
+    background: var(--beige);
+    padding: 10px 14px;
+    font-family: var(--font-corps);
+    font-size: 14px;
+    color: var(--texte);
+    border-radius: var(--radius);
+    transition: border-color var(--transition);
+    outline: none;
+    font-weight: 300;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--or); background: var(--blanc); }
+
+  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: flex-end;
+  }
+
+  .btn-annuler {
+    padding: 10px 24px;
+    background: none;
+    border: 1px solid var(--beige2);
+    color: var(--muted);
+    font-family: var(--font-corps);
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all var(--transition);
+  }
+  .btn-annuler:hover { border-color: var(--muted); color: var(--texte); }
+
+  /* Grille produits */
+  #liste-produits {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--beige2);
+    padding: 1px;
+  }
+
+  .produit-card {
+    background: var(--blanc);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition);
+    animation: fadeIn 0.4s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .produit-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    filter: saturate(0.9);
+    transition: filter var(--transition), transform var(--transition);
+  }
+  .produit-card:hover .produit-img { filter: saturate(1.1); transform: scale(1.02); }
+
+  .produit-img-wrap { overflow: hidden; }
+
+  .produit-body {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .produit-prix {
+    font-family: var(--font-titre);
+    font-size: 20px;
+    color: var(--or);
+    font-weight: 600;
+  }
+
+  .produit-titre {
+    font-family: var(--font-titre);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--vert);
+  }
+
+  .produit-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .produit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--beige2);
+  }
+
+  .btn-panier-add {
+    flex: 1;
+    padding: 9px;
+    background: var(--vert);
+    color: var(--blanc);
+    border: none;
+    font-family: var(--font-corps);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background var(--transition);
+  }
+  .btn-panier-add:hover { background: var(--vert2); }
+
+  .btn-edit, .btn-del {
+    padding: 9px 12px;
+    border: 1px solid var(--beige2);
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    font-size: 13px;
+    transition: all var(--transition);
+  }
+  .btn-edit:hover { border-color: var(--or); color: var(--or); }
+  .btn-del:hover  { border-color: #c0392b; color: #c0392b; }
+
+  /* ===== PANIER SIDEBAR ===== */
+  #panier-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
+  }
+  #panier-overlay.visible { display: block; }
+
+  #panier-sidebar {
+    position: fixed;
+    top: 0; right: -460px;
+    width: 420px;
+    height: 100vh;
+    background: var(--blanc);
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.4s cubic-bezier(.4,0,.2,1);
+    box-shadow: -4px 0 32px rgba(0,0,0,0.12);
+  }
+  #panier-sidebar.visible { right: 0; }
+
+  .panier-head {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--beige2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panier-head-titre {
+    font-family: var(--font-titre);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--vert);
+  }
+  #btn-fermer-panier {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color var(--transition);
+  }
+  #btn-fermer-panier:hover { color: var(--texte); }
+
+  #panier-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 28px;
+  }
+
+  .panier-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--beige2);
+  }
+  .panier-item img {
+    width: 64px; height: 64px;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .panier-info { flex: 1; }
+  .panier-item-nom {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--texte);
+    margin-bottom: 4px;
+  }
+  .panier-item-prix { font-size: 13px; color: var(--or); font-weight: 400; }
+
+  .panier-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qty-btn {
+    width: 26px; height: 26px;
+    border: 1px solid var(--beige2);
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+    color: var(--texte);
+  }
+  .qty-btn:hover { border-color: var(--vert); color: var(--vert); }
+  .qty-val { font-size: 14px; font-weight: 400; min-width: 20px; text-align: center; }
+
+  .btn-del-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--muted);
+    transition: color var(--transition);
+  }
+  .btn-del-item:hover { color: #c0392b; }
+
+  .panier-foot {
+    padding: 20px 28px;
+    border-top: 1px solid var(--beige2);
+  }
+  .panier-total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .panier-total-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  #panier-total { font-family: var(--font-titre); font-size: 28px; color: var(--vert); font-weight: 600; }
+
+  .panier-foot-btns { display: flex; gap: 10px; }
+  .btn-vider {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--beige2);
+    background: none;
+    font-family: var(--font-corps);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all var(--transition);
+  }
+  .btn-vider:hover { border-color: var(--muted); color: var(--texte); }
+
+  .btn-commander {
+    flex: 2;
+    padding: 12px;
+    background: var(--vert);
+    color: var(--blanc);
+    border: none;
+    font-family: var(--font-corps);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background var(--transition);
+  }
+  .btn-commander:hover { background: var(--vert2); }
+
+  #panier-vide {
+    text-align: center;
+    padding: 48px 0;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  /* ===== CONTACT ===== */
+  #page-contact { background: var(--beige); }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+
+  .contact-gauche {
+    background: var(--vert);
+    padding: 80px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contact-gauche .section-titre { color: var(--blanc); margin-bottom: 24px; }
+  .contact-gauche .section-tag { color: var(--or); }
+
+  .contact-infos { margin-top: 48px; display: flex; flex-direction: column; gap: 24px; }
+  .contact-info-item { display: flex; gap: 16px; align-items: flex-start; }
+  .contact-info-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 4px;
+    font-weight: 400;
+  }
+  .contact-info-val { font-size: 14px; color: rgba(255,255,255,0.75); font-weight: 300; }
+
+  .contact-droite {
+    padding: 80px 56px;
+    background: var(--blanc);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+
+  .contact-form .form-group input,
+  .contact-form .form-group textarea {
+    border: none;
+    border-bottom: 1px solid var(--beige2);
+    background: none;
+    border-radius: 0;
+    padding: 10px 0;
+  }
+  .contact-form .form-group input:focus,
+  .contact-form .form-group textarea:focus {
+    border-bottom-color: var(--or);
+    background: none;
+  }
+
+  #msg-succes {
+    display: none;
+    padding: 14px 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: var(--radius);
+    font-size: 14px;
+    border-left: 3px solid #4caf50;
+  }
+  #msg-succes.visible { display: block; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--vert);
+    padding: 48px 48px 32px;
+    border-top: 1px solid rgba(184,149,42,0.2);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 24px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-titre);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--blanc);
+    letter-spacing: 2px;
+  }
+  .footer-logo span { color: var(--or); }
+  .footer-sub { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 300; margin-top: 4px; }
+
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    transition: color var(--transition);
+    letter-spacing: 1px;
+  }
+  .footer-links a:hover { color: var(--or); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    #navbar { padding: 0 20px; }
+    .section, .section-sm { padding: 64px 20px; }
+    .produits-header { padding: 48px 20px 32px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; }
+    .contact-gauche, .contact-droite { padding: 48px 24px; }
+    footer { padding: 48px 20px 24px; }
+    #panier-sidebar { width: 100%; right: -100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-logo">Zay<span>FBS</span></div>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="naviguer('accueil',this)">Accueil</a>
+    <a href="#" onclick="naviguer('produits',this)">Nos produits</a>
+    <a href="#" onclick="naviguer('contact',this)">Contact</a>
+  </div>
+  <button id="btn-panier" onclick="togglePanier()">
+    Panier
+    <span id="panier-count">0</span>
+  </button>
+</nav>
+
+<!-- ===== PAGE ACCUEIL ===== -->
+<div id="page-accueil" class="page active">
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-inner">
+      <p class="hero-tag">Fquih Ben Saleh · Béni Mellal-Khénifra</p>
+      <h1 class="hero-titre">L'or vert<br>de nos <em>fermes</em></h1>
+      <p class="hero-sous">Huile d'olive extra vierge pressée à froid, issue des terres fertiles de la région de Fquih Ben Saleh.</p>
+      <button class="btn-primary" onclick="naviguer('produits', document.querySelector('.nav-links a:nth-child(2)'))">Découvrir nos produits</button>
+    </div>
+  </section>
+
+  <!-- Fermes -->
+  <section id="section-fermes" class="section">
+    <p class="section-tag">Nos fermes</p>
+    <h2 class="section-titre">Un terroir d'exception,<br><em>trois familles</em></h2>
+    <p class="section-desc">Nos oliviers centenaires poussent sur des terres généreuses, cultivées avec passion et respect des traditions.</p>
+    <div class="fermes-grid">
+      <div class="ferme-card">
+        <div class="ferme-icon">◈</div>
+        <div class="ferme-nom">Ferme Al Baraka</div>
+        <div class="ferme-desc">200 hectares d'oliviers Picholine marocain, cultivés en agriculture raisonnée depuis 1952. Récolte entièrement manuelle.</div>
+      </div>
+      <div class="ferme-card">
+        <div class="ferme-icon">◈</div>
+        <div class="ferme-nom">Ferme Oulad Ziane</div>
+        <div class="ferme-desc">Spécialisée dans la variété Menara, cette ferme familiale produit une huile aux arômes d'amande douce et de feuille d'artichaut.</div>
+      </div>
+      <div class="ferme-card">
+        <div class="ferme-icon">◈</div>
+        <div class="ferme-nom">Ferme El Khir</div>
+        <div class="ferme-desc">Certifiée bio depuis 2018, El Khir privilégie la récolte précoce pour une huile intense, fruitée et aux polyphénols élevés.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section id="section-certs" class="section-sm">
+    <p class="section-tag">Certifications</p>
+    <h2 class="section-titre" style="color:#fff; margin-bottom:32px;">Garantie de <em>qualité</em></h2>
+    <div class="certs-grid">
+      <div class="cert-badge">Agriculture biologique</div>
+      <div class="cert-badge">Qualité premium</div>
+      <div class="cert-badge">100% naturel</div>
+      <div class="cert-badge">Acidité &lt; 0.3%</div>
+      <div class="cert-badge">Pressé à froid</div>
+      <div class="cert-badge">ISO 22000</div>
+    </div>
+  </section>
+
+  <!-- Processus -->
+  <section id="section-process" class="section">
+    <p class="section-tag">Savoir-faire</p>
+    <h2 class="section-titre">Du verger à <em>votre table</em></h2>
+    <p class="section-desc">Un processus maîtrisé à chaque étape pour préserver toutes les qualités nutritives de l'olive.</p>
+    <div class="etapes-grid">
+      <div class="etape">
+        <div class="etape-num">01</div>
+        <div class="etape-titre">Récolte</div>
+        <div class="etape-desc">Cueillette manuelle à l'optimal de maturité, entre octobre et décembre, pour garantir la fraîcheur.</div>
+      </div>
+      <div class="etape">
+        <div class="etape-num">02</div>
+        <div class="etape-titre">Pressage</div>
+        <div class="etape-desc">Pressée à froid dans les 24h après récolte pour préserver les arômes et les polyphénols naturels.</div>
+      </div>
+      <div class="etape">
+        <div class="etape-num">03</div>
+        <div class="etape-titre">Filtration</div>
+        <div class="etape-desc">Filtration naturelle par décantation, sans traitement thermique ni additif chimique.</div>
+      </div>
+      <div class="etape">
+        <div class="etape-num">04</div>
+        <div class="etape-titre">Mise en bouteille</div>
+        <div class="etape-desc">Conditionnée en verre teinté pour protéger l'huile de la lumière et préserver sa qualité.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Zay<span>FBS</span></div>
+        <div class="footer-sub">Fquih Ben Saleh · Maroc</div>
+      </div>
+      <div class="footer-links">
+        <a href="#" onclick="naviguer('accueil', document.querySelector('.nav-links a:nth-child(1)'))">Accueil</a>
+        <a href="#" onclick="naviguer('produits', document.querySelector('.nav-links a:nth-child(2)'))">Nos produits</a>
+        <a href="#" onclick="naviguer('contact', document.querySelector('.nav-links a:nth-child(3)'))">Contact</a>
+      </div>
+      <div>
+        <div class="contact-info-label" style="color:rgba(184,149,42,0.8);">Contact</div>
+        <div class="contact-info-val">contact@zayfbs.ma</div>
+        <div class="contact-info-val">+212 623-456789</div>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 ZayFBS – Fquih Ben Saleh, Béni Mellal-Khénifra, Maroc. Tous droits réservés.</p>
+  </footer>
+
+</div>
+
+<!-- ===== PAGE PRODUITS ===== -->
+<div id="page-produits" class="page">
+
+  <div class="produits-header">
+    <div>
+      <p class="section-tag">Nos produits</p>
+      <h2 class="section-titre" style="color:#fff; margin-bottom:0;">Collection <em>ZayFBS</em></h2>
+    </div>
+    <button class="btn-ajouter" onclick="ouvrirFormulaire()">+ Ajouter un produit</button>
+  </div>
+
+  <!-- Formulaire CRUD -->
+  <div id="form-wrapper">
+    <form id="form-produit" onsubmit="soumettreFormulaire(event)">
+      <h3 class="form-titre" id="form-titre-label">Nouveau produit</h3>
+      <input type="hidden" id="edit-id" value="">
+      <div class="form-grid">
+        <div class="form-group col-full">
+          <label>URL de l'image</label>
+          <input type="url" id="f-image" placeholder="https://..." required>
+        </div>
+        <div class="form-group">
+          <label>Titre du produit</label>
+          <input type="text" id="f-titre" placeholder="ex: Huile Extra Vierge 500ml" required>
+        </div>
+        <div class="form-group">
+          <label>Prix (MAD)</label>
+          <input type="number" id="f-prix" placeholder="ex: 75" min="1" required>
+        </div>
+        <div class="form-group col-full">
+          <label>Description</label>
+          <textarea id="f-desc" placeholder="Décrivez le produit..." required></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-annuler" onclick="fermerFormulaire()">Annuler</button>
+        <button type="submit" class="btn-ajouter" id="btn-submit-label">Ajouter</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Liste produits -->
+  <div id="liste-produits"></div>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Zay<span>FBS</span></div>
+        <div class="footer-sub">Fquih Ben Saleh · Maroc</div>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 ZayFBS – Tous droits réservés.</p>
+  </footer>
+</div>
+
+<!-- ===== PAGE CONTACT ===== -->
+<div id="page-contact" class="page">
+  <div class="contact-layout">
+    <div class="contact-gauche">
+      <p class="section-tag">Nous contacter</p>
+      <h2 class="section-titre">Parlons de <em>votre commande</em></h2>
+      <p style="color:rgba(255,255,255,0.6); font-size:14px; font-weight:300;">Notre équipe est disponible pour répondre à toutes vos questions sur nos produits et nos livraisons.</p>
+      <div class="contact-infos">
+        <div class="contact-info-item">
+          <div>
+            <div class="contact-info-label">Région</div>
+            <div class="contact-info-val">Fquih Ben Saleh, Béni Mellal-Khénifra</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div>
+            <div class="contact-info-label">Email</div>
+            <div class="contact-info-val">contact@zayfbs.ma</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div>
+            <div class="contact-info-label">Téléphone</div>
+            <div class="contact-info-val">+212 623-456789</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-droite">
+      <div id="msg-succes">✓ Message envoyé avec succès ! Nous vous répondrons bientôt.</div>
+      <form class="contact-form" onsubmit="envoyerContact(event)">
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" id="c-nom" placeholder="Votre nom" required>
+        </div>
+        <div class="form-group">
+          <label>Adresse email</label>
+          <input type="email" id="c-email" placeholder="vous@exemple.com" required>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="c-msg" placeholder="Votre message..." rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="align-self:flex-start;">Envoyer</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Zay<span>FBS</span></div>
+        <div class="footer-sub">Fquih Ben Saleh · Maroc</div>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 ZayFBS – Tous droits réservés.</p>
+  </footer>
+</div>
+
+<!-- ===== PANIER SIDEBAR ===== -->
+<div id="panier-overlay" onclick="togglePanier()"></div>
+<div id="panier-sidebar">
+  <div class="panier-head">
+    <span class="panier-head-titre">Votre panier</span>
+    <button id="btn-fermer-panier" onclick="togglePanier()">✕</button>
+  </div>
+  <div id="panier-items">
+    <div id="panier-vide">Votre panier est vide.</div>
+  </div>
+  <div class="panier-foot">
+    <div class="panier-total-line">
+      <span class="panier-total-label">Total</span>
+      <span id="panier-total">0 MAD</span>
+    </div>
+    <div class="panier-foot-btns">
+      <button class="btn-vider" onclick="viderPanier()">Vider</button>
+      <button class="btn-commander">Commander</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // =====================
+  // DONNÉES & ÉTAT
+  // =====================
+  let nextId = 4;
+  let modeEdition = false;
+
+  // Données initiales
+  let produits = [
+    { id: 1, titre: 'Huile Extra Vierge 500ml', description: 'Pressée à froid, goût fruité et délicat avec des notes d\'amande douce.', prix: 45, image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop' },
+    { id: 2, titre: 'Huile Premium 1L',         description: 'Première pression, acidité < 0.3%, certifiée bio. Idéale pour cuisiner et assaisonner.', prix: 85, image: 'https://images.unsplash.com/photo-1601379327928-bedfaf9da2d0?w=500&auto=format&fit=crop' },
+    { id: 3, titre: 'Coffret Dégustation',      description: '3 bouteilles de variétés différentes : Picholine, Menara et Haouzia. Idéal cadeau.', prix: 120, image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&auto=format&fit=crop' }
+  ];
+
+  // Panier : tableau d'objets { id, titre, prix, image, quantite }
+  let panier = [];
+
+  // =====================
+  // NAVIGATION SPA
+  // =====================
+  function naviguer(page, lien) {
+    // Masquer toutes les pages
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    // Retirer la classe active des liens
+    document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+    // Afficher la page cible
+    document.getElementById('page-' + page).classList.add('active');
+    // Marquer le lien actif
+    if (lien) lien.classList.add('active');
+    // Remonter en haut
+    window.scrollTo(0, 0);
+    // Afficher les produits si on va sur la page produits
+    if (page === 'produits') afficherProduits();
+    return false;
+  }
+
+  // =====================
+  // CRUD — PRODUITS
+  // =====================
+
+  // READ : afficher tous les produits
+  function afficherProduits() {
+    let liste = document.getElementById('liste-produits');
+    liste.innerHTML = '';
+    produits.forEach(function(p) {
+      let carte = document.createElement('div');
+      carte.className = 'produit-card';
+      carte.innerHTML =
+        '<div class="produit-img-wrap">' +
+          '<img class="produit-img" src="' + p.image + '" alt="' + p.titre + '" onerror="this.src=\'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500\'"/>' +
+        '</div>' +
+        '<div class="produit-body">' +
+          '<div class="produit-prix">' + p.prix + ' MAD</div>' +
+          '<div class="produit-titre">' + p.titre + '</div>' +
+          '<div class="produit-desc">' + p.description + '</div>' +
+          '<div class="produit-actions">' +
+            '<button class="btn-panier-add" onclick="ajouterAuPanier(' + p.id + ')">Ajouter au panier</button>' +
+            '<button class="btn-edit" onclick="ouvrirModification(' + p.id + ')" title="Modifier">✎</button>' +
+            '<button class="btn-del" onclick="supprimerProduit(' + p.id + ')" title="Supprimer">✕</button>' +
+          '</div>' +
+        '</div>';
+      liste.appendChild(carte);
+    });
+  }
+
+  // CREATE : ajouter un produit au tableau
+  function ajouterProduit(data) {
+    data.id = nextId++;
+    produits.push(data);
+    afficherProduits();
+  }
+
+  // UPDATE : modifier un produit existant
+  function modifierProduit(id, nouvellesDonnees) {
+    produits = produits.map(function(p) {
+      return p.id === id ? Object.assign({}, p, nouvellesDonnees) : p;
+    });
+    afficherProduits();
+  }
+
+  // DELETE : supprimer un produit
+  function supprimerProduit(id) {
+    if (!confirm('Supprimer ce produit ?')) return;
+    produits = produits.filter(function(p) { return p.id !== id; });
+    afficherProduits();
+  }
+
+  // =====================
+  // FORMULAIRE
+  // =====================
+  function ouvrirFormulaire() {
+    modeEdition = false;
+    document.getElementById('edit-id').value = '';
+    document.getElementById('form-produit').reset();
+    document.getElementById('form-titre-label').textContent = 'Nouveau produit';
+    document.getElementById('btn-submit-label').textContent = 'Ajouter';
+    document.getElementById('form-wrapper').classList.add('visible');
+    document.getElementById('form-wrapper').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function ouvrirModification(id) {
+    let p = produits.find(function(x) { return x.id === id; });
+    if (!p) return;
+    modeEdition = true;
+    document.getElementById('edit-id').value = id;
+    document.getElementById('f-image').value  = p.image;
+    document.getElementById('f-titre').value  = p.titre;
+    document.getElementById('f-prix').value   = p.prix;
+    document.getElementById('f-desc').value   = p.description;
+    document.getElementById('form-titre-label').textContent = 'Modifier le produit';
+    document.getElementById('btn-submit-label').textContent = 'Enregistrer';
+    document.getElementById('form-wrapper').classList.add('visible');
+    document.getElementById('form-wrapper').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function fermerFormulaire() {
+    document.getElementById('form-wrapper').classList.remove('visible');
+    document.getElementById('form-produit').reset();
+    modeEdition = false;
+  }
+
+  function soumettreFormulaire(e) {
+    e.preventDefault();
+    let data = {
+      image:       document.getElementById('f-image').value.trim(),
+      titre:       document.getElementById('f-titre').value.trim(),
+      prix:        parseInt(document.getElementById('f-prix').value),
+      description: document.getElementById('f-desc').value.trim()
+    };
+    if (modeEdition) {
+      let id = parseInt(document.getElementById('edit-id').value);
+      modifierProduit(id, data);
+    } else {
+      ajouterProduit(data);
+    }
+    fermerFormulaire();
+  }
+
+  // =====================
+  // PANIER
+  // =====================
+  function togglePanier() {
+    document.getElementById('panier-overlay').classList.toggle('visible');
+    document.getElementById('panier-sidebar').classList.toggle('visible');
+  }
+
+  function ajouterAuPanier(id) {
+    let p = produits.find(function(x) { return x.id === id; });
+    if (!p) return;
+    let item = panier.find(function(x) { return x.id === id; });
+    if (item) {
+      item.quantite++;
+    } else {
+      panier.push({ id: p.id, titre: p.titre, prix: p.prix, image: p.image, quantite: 1 });
+    }
+    mettreAJourPanier();
+  }
+
+  function changerQuantite(id, delta) {
+    let item = panier.find(function(x) { return x.id === id; });
+    if (!item) return;
+    item.quantite += delta;
+    if (item.quantite <= 0) panier = panier.filter(function(x) { return x.id !== id; });
+    mettreAJourPanier();
+  }
+
+  function supprimerDuPanier(id) {
+    panier = panier.filter(function(x) { return x.id !== id; });
+    mettreAJourPanier();
+  }
+
+  function viderPanier() {
+    panier = [];
+    mettreAJourPanier();
+  }
+
+  function mettreAJourTotal() {
+    let total = panier.reduce(function(acc, x) { return acc + x.prix * x.quantite; }, 0);
+    document.getElementById('panier-total').textContent = total + ' MAD';
+    return total;
+  }
+
+  function mettreAJourPanier() {
+    // Compteur navbar
+    let nbArticles = panier.reduce(function(acc, x) { return acc + x.quantite; }, 0);
+    let badge = document.getElementById('panier-count');
+    if (nbArticles > 0) {
+      badge.textContent = nbArticles;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+
+    // Affichage des items
+    let container = document.getElementById('panier-items');
+    if (panier.length === 0) {
+      container.innerHTML = '<div id="panier-vide">Votre panier est vide.</div>';
+    } else {
+      container.innerHTML = panier.map(function(item) {
+        return '<div class="panier-item">' +
+          '<img src="' + item.image + '" alt="' + item.titre + '">' +
+          '<div class="panier-info">' +
+            '<div class="panier-item-nom">' + item.titre + '</div>' +
+            '<div class="panier-item-prix">' + (item.prix * item.quantite) + ' MAD</div>' +
+          '</div>' +
+          '<div class="panier-qty">' +
+            '<button class="qty-btn" onclick="changerQuantite(' + item.id + ',-1)">−</button>' +
+            '<span class="qty-val">' + item.quantite + '</span>' +
+            '<button class="qty-btn" onclick="changerQuantite(' + item.id + ',1)">+</button>' +
+          '</div>' +
+          '<button class="btn-del-item" onclick="supprimerDuPanier(' + item.id + ')">✕</button>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Total
+    mettreAJourTotal();
+  }
+
+  // =====================
+  // FORMULAIRE CONTACT
+  // =====================
+  function envoyerContact(e) {
+    e.preventDefault();
+    document.getElementById('msg-succes').classList.add('visible');
+    e.target.reset();
+    setTimeout(function() {
+      document.getElementById('msg-succes').classList.remove('visible');
+    }, 4000);
+  }
+
+  // =====================
+  // INIT
+  // =====================
+  afficherProduits();
+</script>
+</body>
+</html>
